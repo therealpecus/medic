@@ -11,4 +11,6 @@ Options:
     -h, --help        Show this help text.
     -o, --output      File path to output the results of this run to.
     -p, --compare     Path to a previous results file to compare against.
+    -r, --rate        Limit HTTP requests to x per interval (default: 2).
+    -i, --interval    Interval limit for HTTP requests (default: 1)
     -v, --version     Print medic's version.
