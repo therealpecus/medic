@@ -1,0 +1,24 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.10.1
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  'npm:http-signature:20150122':
+    - request-rate-limiter > request > http-signature:
+        reason: initial audit
+        expires: '2018-03-09T14:16:04.052Z'
+  'npm:qs:20170213':
+    - request-rate-limiter > request > qs:
+        reason: None given
+        expires: '2018-03-09T14:16:04.052Z'
+  'npm:tunnel-agent:20170305':
+    - request-rate-limiter > request > tunnel-agent:
+        reason: None given
+        expires: '2018-03-09T14:16:04.052Z'
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:hawk:20160119':
+    - request-rate-limiter > request > hawk:
+        patched: '2018-02-07T14:15:06.970Z'
+  'npm:request:20160119':
+    - request-rate-limiter > request:
+        patched: '2018-02-07T14:15:06.970Z'
