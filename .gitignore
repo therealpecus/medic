@@ -1,6 +1,6 @@
 /node_modules/
 /test/fixtures/temp-results.json
 urls/
-
-HowTo.md
 testurls.txt
+compare.json
+HowTo.md

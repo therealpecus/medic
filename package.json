@@ -30,16 +30,17 @@
     "lodash": "^4.17.5",
     "meow": "^4.0.0",
     "request": "^2.51.0",
+    "request-promise-native": "^1.0.5",
     "request-rate-limiter": "^1.0.2",
     "update-notifier": "^2.3.0"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
+    "chai": "^3.2.0",
     "eslint-config-rowno": "^4.0.0",
     "express": "^4.13.3",
-    "grunt": "^1.0.1",
-    "grunt-eslint": "^20.1.0",
-    "grunt-mocha-cli": "^4.0.0",
+    "grunt": "^0.4.5",
+    "grunt-eslint": "^17.3.1",
+    "grunt-mocha-cli": "^2.0.0",
     "load-grunt-tasks": "^3.0.0",
     "nock": "^9.1.6",
     "time-grunt": "^1.0.0"
