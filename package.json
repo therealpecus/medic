@@ -19,7 +19,8 @@
   "scripts": {
     "test": "snyk test && grunt test",
     "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "prepare": "npm run snyk-protect",
+    "prepublish": "npm run snyk-protect"
   },
   "engines": {
     "node": ">=0.12.0"

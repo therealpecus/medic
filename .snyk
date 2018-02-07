@@ -18,7 +18,7 @@ ignore:
 patch:
   'npm:hawk:20160119':
     - request-rate-limiter > request > hawk:
-        patched: '2018-02-07T14:15:06.970Z'
+        patched: '2018-02-07T14:54:20.463Z'
   'npm:request:20160119':
     - request-rate-limiter > request:
-        patched: '2018-02-07T14:15:06.970Z'
+        patched: '2018-02-07T14:54:20.463Z'
