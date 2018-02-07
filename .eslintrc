@@ -1,6 +1,6 @@
 ---
 root: true
-extends: rowno
+extends: rowno/es6
 env:
     node: true
     mocha: true
