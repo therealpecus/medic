@@ -1,28 +1,28 @@
 /* eslint-disable no-sync */
 'use strict';
-var path = require('path');
-var fs = require('fs');
-var exec = require('child_process').exec;
-var expect = require('chai').expect;
-var express = require('express');
+const path = require('path');
+const fs = require('fs');
+const exec = require('child_process').exec;
+const expect = require('chai').expect;
+const express = require('express');
 
-var CLI = path.resolve(require('../package.json').bin.medic);
-var URLS_FILE = path.join(__dirname, 'fixtures/urls.txt');
-var TEMP_OUTPUT_FILE = path.join(__dirname, 'fixtures/temp-results.json');
-var COMPARE_FILE = path.join(__dirname, 'fixtures/results-previous.json');
-var PORT = 15000;
-var COOKIE_STATUS = 400;
-var HTML = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Test</title></head><body></body></html>';
-var app = express();
-var server;
-var fixtureOutput = [
-    '1/2  ✔  200  http://localhost:' + PORT + '/1/',
-    '2/2  ✔  200  http://localhost:' + PORT + '/2/',
+const CLI = path.resolve(require('../package.json').bin.medic);
+const URLS_FILE = path.join(__dirname, 'fixtures/urls.txt');
+const TEMP_OUTPUT_FILE = path.join(__dirname, 'fixtures/temp-results.json');
+const COMPARE_FILE = path.join(__dirname, 'fixtures/results-previous.json');
+const PORT = 15000;
+const COOKIE_STATUS = 400;
+const HTML = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Test</title></head><body></body></html>';
+const app = express();
+let server;
+const fixtureOutput = [
+    `1/2  ✔  200  http://localhost:${PORT}/1/`,
+    `2/2  ✔  200  http://localhost:${PORT}/2/`,
     '',
 ].join('\n');
 
 
-app.use(function (req, res) {
+app.use((req, res) => {
     if (req.headers.cookie === 'Location=nz') {
         res.status(COOKIE_STATUS).send(HTML);
     } else {
@@ -31,12 +31,12 @@ app.use(function (req, res) {
 });
 
 
-describe('cli', function () {
-    before(function (done) {
+describe('cli', () => {
+    before((done) => {
         server = app.listen(PORT, 'localhost', done);
     });
 
-    after(function () {
+    after(() => {
         if (fs.existsSync(TEMP_OUTPUT_FILE)) {
             fs.unlinkSync(TEMP_OUTPUT_FILE);
         }
@@ -44,18 +44,18 @@ describe('cli', function () {
     });
 
 
-    it('should get status of urls in file', function (done) {
-        var child = exec(
-            CLI + ' ' + URLS_FILE,
+    it('should get status of urls in file', (done) => {
+        const child = exec(
+            `${CLI} ${URLS_FILE}`,
             { cwd: __dirname },
-            function (error, stdout, stderr) {
+            (error, stdout, stderr) => {
                 if (error) {
                     return done(error);
                 }
 
                 expect(stdout, 'stdout').to.equal(fixtureOutput);
                 expect(stderr, 'stderr').to.equal('');
-                done();
+                return done();
             }
         );
 
@@ -63,18 +63,18 @@ describe('cli', function () {
     });
 
 
-    it('should get status of urls passed through stdin', function (done) {
-        var child = exec(
+    it('should get status of urls passed through stdin', (done) => {
+        const child = exec(
             CLI,
             { cwd: __dirname },
-            function (error, stdout, stderr) {
+            (error, stdout, stderr) => {
                 if (error) {
                     return done(error);
                 }
 
                 expect(stdout, 'stdout').to.equal(fixtureOutput);
                 expect(stderr, 'stderr').to.equal('');
-                done();
+                return done();
             }
         );
 
@@ -82,20 +82,20 @@ describe('cli', function () {
     });
 
 
-    it('should output results to file', function (done) {
-        var fixture = [{
-            url: 'http://localhost:' + PORT + '/1/',
+    it('should output results to file', (done) => {
+        const fixture = [{
+            url: `http://localhost:${PORT}/1/`,
             statusCode: 200
         }, {
-            url: 'http://localhost:' + PORT + '/2/',
+            url: `http://localhost:${PORT}/2/`,
             statusCode: 200
         }];
 
-        var child = exec(
-            CLI + ' ' + URLS_FILE + ' --output ' + TEMP_OUTPUT_FILE,
+        const child = exec(
+            `${CLI} ${URLS_FILE}  --output ${TEMP_OUTPUT_FILE}`,
             { cwd: __dirname },
-            function (error, stdout, stderr) {
-                var outputFileContent;
+            (error, stdout, stderr) => {
+                let outputFileContent;
 
                 if (error) {
                     return done(error);
@@ -107,7 +107,7 @@ describe('cli', function () {
                 expect(outputFileContent, 'outputted results').to.deep.equal(fixture);
                 expect(stdout, 'stdout').to.equal(fixtureOutput);
                 expect(stderr, 'stderr').to.equal('');
-                done();
+                return done();
             }
         );
 
@@ -115,29 +115,28 @@ describe('cli', function () {
     });
 
 
-    it('should log compare results', function (done) {
-        var child;
-        var fixture = [
+    it('should log compare results', (done) => {
+        let fixture = [
             '',
             'Changes',
             '',
-            '404 →  200  http://localhost:' + PORT + '/1/',
+            `404 →  200  http://localhost:${PORT}/1/`,
             '',
         ].join('\n');
 
         fixture = fixtureOutput + fixture;
 
-        child = exec(
-            CLI + ' ' + URLS_FILE + ' --compare ' + COMPARE_FILE,
+        const child = exec(
+            `${CLI} ${URLS_FILE}  --compare ${COMPARE_FILE}`,
             { cwd: __dirname },
-            function (error, stdout, stderr) {
+            (error, stdout, stderr) => {
                 if (error) {
                     return done(error);
                 }
 
                 expect(stdout, 'stdout').to.equal(fixture);
                 expect(stderr, 'stderr').to.equal('');
-                done();
+                return done();
             }
         );
 
@@ -145,20 +144,19 @@ describe('cli', function () {
     });
 
 
-    it('should set cookies from yaml front matter', function (done) {
-        var child;
+    it('should set cookies from yaml front matter', (done) => {
 
-        child = exec(
-            CLI + ' ' + path.join(__dirname, 'fixtures/cookies.txt'),
+        const child = exec(
+            `${CLI} ${path.join(__dirname, 'fixtures/cookies.txt')}`,
             { cwd: __dirname },
-            function (error, stdout, stderr) {
+            (error, stdout, stderr) => {
                 if (error) {
                     return done(error);
                 }
 
-                expect(stdout, 'stdout').to.equal('1/1  ⚠  ' + COOKIE_STATUS + '  http://localhost:' + PORT + '/1/\n');
+                expect(stdout, 'stdout').to.equal(`1/1  ⚠  ${COOKIE_STATUS}  http://localhost:${PORT}/1/\n`);
                 expect(stderr, 'stderr').to.equal('');
-                done();
+                return done();
             }
         );
 
