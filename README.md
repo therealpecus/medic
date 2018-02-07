@@ -1,8 +1,9 @@
 Medic
 =====
 
-[![Build Status](https://api.travis-ci.org/Rowno/medic.svg?branch=master)](https://travis-ci.org/Rowno/medic)
-[![Dependency Status](https://david-dm.org/Rowno/medic/status.svg)](https://david-dm.org/Rowno/medic)
+[![Build Status](https://api.travis-ci.org/therealpecus/medic.svg?branch=master)](https://travis-ci.org/therealpecus/medic)
+[![Dependency Status](https://david-dm.org/Rowno/medic/status.svg)](https://david-dm.org/therealpecus/medic)
+[![Coverage Status](https://coveralls.io/repos/github/therealpecus/medic/badge.svg)](https://coveralls.io/github/therealpecus/medic)
 
 Perform bulk URL status checks and track changes.
 
