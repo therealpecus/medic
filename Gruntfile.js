@@ -1,6 +1,6 @@
 'use strict';
-var loadGruntTasks = require('load-grunt-tasks');
-var timeGrunt = require('time-grunt');
+const loadGruntTasks = require('load-grunt-tasks');
+const timeGrunt = require('time-grunt');
 
 
 module.exports = function (grunt) {
