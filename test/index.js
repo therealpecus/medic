@@ -1,18 +1,18 @@
 'use strict';
-var expect = require('chai').expect;
-var nock = require('nock');
-var medic = require('../');
+const expect = require('chai').expect;
+const nock = require('nock');
+const medic = require('../');
 
-var SUCCESS = 200;
-var MOVED = 301;
-var NOT_FOUND = 404;
-var HTML = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Test</title></head><body></body></html>';
+const SUCCESS = 200;
+const MOVED = 301;
+const NOT_FOUND = 404;
+const HTML = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Test</title></head><body></body></html>';
 
 
-describe('index', function () {
-    describe('#check', function () {
-        it('should get the status of urls', function () {
-            var fixture = [{
+describe('index', () => {
+    describe('#check', () => {
+        it('should get the status of urls', () => {
+            const fixture = [{
                 url: 'http://localhost/1/',
                 statusCode: SUCCESS
             }, {
@@ -31,14 +31,14 @@ describe('index', function () {
                     'http://localhost/1/',
                     'http://localhost/2/'
                 ]
-            }).then(function (result) {
+            }).then((result) => {
                 expect(result).to.deep.equal(fixture);
             });
         });
 
 
-        it('should track redirects', function () {
-            var fixture = [{
+        it('should track redirects', () => {
+            const fixture = [{
                 url: 'http://localhost/1/',
                 statusCode: SUCCESS,
                 redirectUrl: 'http://localhost/2/'
@@ -54,14 +54,14 @@ describe('index', function () {
 
             return medic.check({
                 urls: ['http://localhost/1/']
-            }).then(function (result) {
+            }).then((result) => {
                 expect(result).to.deep.equal(fixture);
             });
         });
 
 
-        it('should set status code to 500 for ASP.NET 500 error page', function () {
-            var fixture = [{
+        it('should set status code to 500 for ASP.NET 500 error page', () => {
+            const fixture = [{
                 url: 'http://localhost/errors/500.aspx?aspxerrorpath=/1/',
                 statusCode: 500
             }];
@@ -74,21 +74,21 @@ describe('index', function () {
                 urls: [
                     'http://localhost/errors/500.aspx?aspxerrorpath=/1/'
                 ]
-            }).then(function (result) {
+            }).then((result) => {
                 expect(result).to.deep.equal(fixture);
             });
         });
 
 
-        it('should call onProgress function with each URL check', function () {
-            var fixture = [{
+        it('should call onProgress function with each URL check', () => {
+            const fixture = [{
                 url: 'http://localhost/1/',
                 statusCode: SUCCESS
             }, {
                 url: 'http://localhost/2/',
                 statusCode: NOT_FOUND
             }];
-            var count = 0;
+            let count = 0;
 
             nock('http://localhost')
                 .get('/1/')
@@ -101,19 +101,19 @@ describe('index', function () {
                     'http://localhost/1/',
                     'http://localhost/2/'
                 ],
-                onProgress: function (result) {
+                onProgress: (result) => {
                     expect(result, 'progress result').to.deep.equal(fixture[count]);
                     count += 1;
                 }
-            }).then(function (result) {
+            }).then((result) => {
                 expect(count, 'progress count').to.equal(2);
                 expect(result, 'final result').to.deep.equal(fixture);
             });
         });
 
 
-        it('should support standard callbacks', function (done) {
-            var fixture = [{
+        it('should support standard callbacks', (done) => {
+            const fixture = [{
                 url: 'http://localhost/1/',
                 statusCode: SUCCESS
             }];
@@ -124,19 +124,19 @@ describe('index', function () {
 
             medic.check({
                 urls: ['http://localhost/1/']
-            }, function (error, result) {
+            }, (error, result) => {
                 if (error) {
                     return done(error);
                 }
 
                 expect(result, 'final result').to.deep.equal(fixture);
-                done();
+                return done();
             });
         });
 
 
-        it('should set cookies', function (done) {
-            var fixture = [{
+        it('should set cookies', (done) => {
+            const fixture = [{
                 url: 'http://localhost/1/',
                 statusCode: SUCCESS
             }];
@@ -148,35 +148,35 @@ describe('index', function () {
             medic.check({
                 cookies: ['Location=nz'],
                 urls: ['http://localhost/1/'],
-            }, function (error, result) {
+            }, (error, result) => {
                 if (error) {
                     return done(error);
                 }
 
                 expect(result, 'final result').to.deep.equal(fixture);
-                done();
+                return done();
             });
         });
     });
 
 
-    describe('#compare', function () {
-        it('should return results that have different status codes', function () {
-            var fixtureCurrent = [{
+    describe('#compare', () => {
+        it('should return results that have different status codes', () => {
+            const fixtureCurrent = [{
                 url: 'http://localhost/1/',
                 statusCode: SUCCESS
             }, {
                 url: 'http://localhost/2/',
                 statusCode: NOT_FOUND
             }];
-            var fixturePrevious = [{
+            const fixturePrevious = [{
                 url: 'http://localhost/1/',
                 statusCode: SUCCESS
             }, {
                 url: 'http://localhost/2/',
                 statusCode: SUCCESS
             }];
-            var fixtureCompare = [{
+            const fixtureCompare = [{
                 current: {
                     url: 'http://localhost/2/',
                     statusCode: NOT_FOUND
@@ -187,7 +187,7 @@ describe('index', function () {
                 }
             }];
 
-            var result = medic.compare({
+            const result = medic.compare({
                 currentResults: fixtureCurrent,
                 previousResults: fixturePrevious
             });
